@@ -1,0 +1,16 @@
+[package]
+name = "sla-escrow"
+version = "0.1.0"
+edition = "2021"
+description = "API Safety Net — parametric SLA escrow for Soroban/Stellar"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = "26.1.0"
+
+[dev-dependencies]
+soroban-sdk = { version = "26.1.0", features = ["testutils"] }

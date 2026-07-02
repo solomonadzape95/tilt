@@ -1,0 +1,50 @@
+name: Frontend CI
+
+on:
+  push:
+    paths-ignore:
+      - "contracts/**"
+      - "docs/**"
+  pull_request:
+    paths-ignore:
+      - "contracts/**"
+      - "docs/**"
+
+jobs:
+  build:
+    name: Typecheck & build Next.js app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        # Build-time placeholders only — no real secrets. Runtime config is
+        # provided by the hosting platform (Vercel) at deploy time.
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://dummy.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy_anon
+          SUPABASE_SERVICE_ROLE_KEY: dummy_service
+          TRUSTLESS_WORK_API_KEY: dummy
+          TRUSTLESS_WORK_BASE_URL: https://api.trustlesswork.com
+          NEXT_PUBLIC_TRUSTLESS_WORK_ENV: testnet
+          STELLAR_PLATFORM_PUBLIC: GDQ6FW2FPTRMRVRYX7GGZ6ZDS7F6EPDZ7UUCS5ORRMVIBSYRYXKG36PC
+          STELLAR_PLATFORM_SECRET: SB7777777777777777777777777777777777777777777777777777
+          NEXT_PUBLIC_USDC_ISSUER: GDQ6FW2FPTRMRVRYX7GGZ6ZDS7F6EPDZ7UUCS5ORRMVIBSYRYXKG36PC
+          NEXT_PUBLIC_STELLAR_NETWORK: testnet
+          NEXT_PUBLIC_HORIZON_URL: https://horizon-testnet.stellar.org
+          NEXT_PUBLIC_STELLAR_EXPLORER: https://stellar.expert/explorer/testnet
+          CRYPT_SESSION_SECRET: dummy_session_secret_at_least_32_chars_long_xx
+          ADMIN_WALLETS: GDQ6FW2FPTRMRVRYX7GGZ6ZDS7F6EPDZ7UUCS5ORRMVIBSYRYXKG36PC
+          CRON_SECRET: dummy_cron
